@@ -12,10 +12,12 @@ class Profile extends Component {
         this.state = {
             notes: [],
             bio: {
-                name: 'Christopher Quackenbush'
+                name: ''
             },
-            repos: [1,2,3]
-        }
+            repos: []
+        };
+
+        this.handleAddNote = this.handleAddNote.bind(this);
     }
 
     componentDidMount() {
@@ -34,6 +36,16 @@ class Profile extends Component {
         this.childRef.set(this.state.notes);
     }
 
+    handleAddNote(newNote) {
+        console.log("Adding note: " + newNote);
+
+        this.setState({
+            notes: this.state.notes.concat([newNote])
+        }, function() {
+            this.childRef.set(this.state.notes);
+        });
+    }
+
     render() {
         var username = this.props.params.username;
 
@@ -45,7 +57,10 @@ class Profile extends Component {
                 <Repos username={username} repos={this.state.repos} />
             </div>
             <div className="col-md-4">
-                <Notes username={username} notes={this.state.notes} />
+                <Notes username={username}
+                       notes={this.state.notes}
+                       addNote={this.handleAddNote}
+                />
             </div>
         </div>
     }
