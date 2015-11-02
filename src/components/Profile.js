@@ -32,10 +32,6 @@ class Profile extends Component {
         });
     }
 
-    componentWillUnmount() {
-        this.childRef.set(this.state.notes);
-    }
-
     handleAddNote(newNote) {
         console.log("Adding note: " + newNote);
 

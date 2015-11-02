@@ -7,6 +7,6 @@ export const routes = {
     component: App,
     indexRoute: { component: Home },
     childRoutes: [
-        { path: 'profile/:username', component: Profile }
+        { path: 'profile/:username', component: Profile, name: 'profile' }
     ]
 };
