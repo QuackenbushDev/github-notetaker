@@ -17,13 +17,29 @@ class Profile extends Component {
         };
 
         this.handleAddNote = this.handleAddNote.bind(this);
+        this.init = this.init.bind(this);
     }
 
     componentDidMount() {
+        this.init(this.props.params.username);
+    }
+
+    componentWillReceiveProps(props) {
+        this.init(props.params.username);
+    }
+
+    init(username) {
+        console.log(this.props.params.username);
+        this.setState({
+            notes: [],
+            bio:   {},
+            repos: []
+        });
+
         var _this = this;
         var ref = new Firebase('https://reactnotes-qdev.firebaseio.com');
 
-        this.childRef = ref.child(this.props.params.username).child('notes');
+        this.childRef = ref.child(username).child('notes');
         this.childRef.on('value', function(snapshot) {
             if (snapshot.val() != null && snapshot.val().length > 0) {
                 var notes = snapshot.val();
@@ -36,7 +52,7 @@ class Profile extends Component {
             });
         });
 
-        Helper.getGithubInfo(this.props.params.username)
+        Helper.getGithubInfo(username)
             .then(function(dataObj) {
                 _this.setState({
                     bio: dataObj.bio,
