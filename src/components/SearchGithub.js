@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Router } from 'react-router'
+import History from './History'
 
 class SearchGithub extends Component {
     constructor(props) {
@@ -12,7 +13,8 @@ class SearchGithub extends Component {
         var username = this.refs.username.value;
         this.refs.username.value = '';
 
-        Router.transitionTo('profile', { username: username });
+        // TODO: Look into why the DOM refreshes twice.
+        History.pushState(this.state, '#/profile/' + username);
     }
 
     render() {
