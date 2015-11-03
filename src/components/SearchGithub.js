@@ -13,8 +13,8 @@ class SearchGithub extends Component {
         var username = this.refs.username.value;
         this.refs.username.value = '';
 
-        // TODO: Look into why the DOM refreshes twice.
-        History.pushState(this.state, '#/profile/' + username);
+        // TODO: Look into why the DOM refreshes twice. Initial redirect includes a ? before the url, before redirecting finally to the profile page.
+        History.pushState(null, `/#/profile/${username}`);
     }
 
     render() {

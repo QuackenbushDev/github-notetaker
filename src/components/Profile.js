@@ -4,6 +4,7 @@ import UserProfile from './Github/UserProfile'
 import Repos from './Github/Repos'
 import Notes from './Notes/Notes'
 import Firebase from 'firebase'
+import Helper from '../utils/helpers'
 
 class Profile extends Component {
     constructor(props) {
@@ -11,9 +12,7 @@ class Profile extends Component {
 
         this.state = {
             notes: [],
-            bio: {
-                name: ''
-            },
+            bio:   {},
             repos: []
         };
 
@@ -26,10 +25,24 @@ class Profile extends Component {
 
         this.childRef = ref.child(this.props.params.username).child('notes');
         this.childRef.on('value', function(snapshot) {
+            if (snapshot.val() != null && snapshot.val().length > 0) {
+                var notes = snapshot.val();
+            } else {
+                var notes = [];
+            }
+
             _this.setState({
-                notes: snapshot.val()
+                notes: notes
             });
         });
+
+        Helper.getGithubInfo(this.props.params.username)
+            .then(function(dataObj) {
+                _this.setState({
+                    bio: dataObj.bio,
+                    repos: dataObj.repos
+                });
+            });
     }
 
     handleAddNote(newNote) {
